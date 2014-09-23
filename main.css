@@ -23,6 +23,7 @@ margin: auto;
 background-color: black;
 position: relative;
 padding-top: 25px;
+box-shadow: 5px 5px 15px;
 }
 
 .amPMLabels {

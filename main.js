@@ -31,15 +31,12 @@ $(document).on('ready', function() {
 	$('.clock-screen').append(clockAMPMIndicator);
 	$('.indicator').attr('ID', 'PM');
 	$('.clock-screen').append(clockText);
-	
-	var realTime = '';
-	setInterval(function(){
+
+	var indPosition = function(){
 		var timeString = new Date();
 		var timeMinutes = timeString.getMinutes();
 		var timeHours = timeString.getHours();
-		if(timeHours > 12){
-			timeHours = timeHours-12;
-		}
+
 		if(timeHours < 10){
 			timeHours = '0'+timeHours;
 		}
@@ -47,18 +44,19 @@ $(document).on('ready', function() {
 		if(timeMinutes < 10){
 			timeMinutes = '0'+timeMinutes;
 		}
-		console.log(timeHours);
-		console.log(timeMinutes);
 
-		realTime = timeHours+':'+timeMinutes;
-		$('.clock-text').text(realTime);
+		armyTime = timeHours+':'+timeMinutes;
+		if (armyTime <= "11:59" && $('.indicator').attr('ID') === 'PM'){
+			$('.indicator').attr('ID', '');
+		} 
+	};
 	
-	}, 1000);
-
+	var realTime = '';
 	var getTime = function(){
 		var timeString = new Date();
 		var timeMinutes = timeString.getMinutes();
 		var timeHours = timeString.getHours();
+
 		if(timeHours > 12){
 			timeHours = timeHours-12;
 		}
@@ -69,16 +67,42 @@ $(document).on('ready', function() {
 		if(timeMinutes < 10){
 			timeMinutes = '0'+timeMinutes;
 		}
-		console.log(timeHours);
-		console.log(timeMinutes);
+	
 
 		realTime = timeHours+':'+timeMinutes;
 		$('.clock-text').text(realTime);
+	};
+	var changeIndicator = function(){
+		var timeString = new Date();
+		var timeMinutes = timeString.getMinutes();
+		var timeHours = timeString.getHours();
 
+		if(timeHours < 10){
+			timeHours = '0'+timeHours;
+		}
 
-	}
+		if(timeMinutes < 10){
+			timeMinutes = '0'+timeMinutes;
+		}
+
+		indTime = timeHours+':'+timeMinutes;
+		if (indTime === "12:00" && $('.indicator').attr('ID') === ''){
+			$('.indicator').attr('ID', 'PM');
+		}
+		if (indTime === "00:00" && $('.indicator').attr('ID') === 'PM'){
+			$('.indicator').attr('ID', '');
+		} 
+	};
+	indPosition();
 	getTime();
-	// setInterval(getTime(), 1000);
+	changeIndicator();
+
+	setInterval(function(){getTime()}, 1000);
+	setInterval(function(){changeIndicator()}, 1000);
+
+
 	
 
 });
+
+
